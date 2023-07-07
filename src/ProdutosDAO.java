@@ -10,12 +10,9 @@
 
 import java.sql.PreparedStatement;
 import java.sql.Connection;
-import java.sql.Date;
-import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class ProdutosDAO {
@@ -61,8 +58,39 @@ public class ProdutosDAO {
         }
     }
     
- 
+    public void venderProduto(int id) {
+        conn = new conectaDAO().connectDB();
+        try {
+            prep = conn.prepareStatement("UPDATE produtos SET status = ? WHERE id = ?");
+            prep.setString(1, "Vendido");
+            prep.setInt(2, id);
+            prep.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println(ex.getErrorCode());
+        }
+    }
     
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+        conn = new conectaDAO().connectDB();
+        try {
+            prep = conn.prepareStatement("SELECT * FROM produtos WHERE status = ?");
+            prep.setString(1, "Vendido");
+            resultset = prep.executeQuery();
+            
+            while (resultset.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(resultset.getInt("id"));
+                produto.setNome(resultset.getString("nome"));
+                produto.setValor(resultset.getInt("valor"));
+                produto.setStatus(resultset.getString("status"));
+                listagem.add(produto);
+            }
+            return listagem;
+        } catch (SQLException ex) {
+            System.out.println("Erro ao conectar: " + ex.getMessage());
+            return null;
+        }
+    }
     
 }
 

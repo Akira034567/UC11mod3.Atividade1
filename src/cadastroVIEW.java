@@ -157,6 +157,8 @@ public class cadastroVIEW extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto" );
         }
+        cadastroNome.setText("");
+        cadastroValor.setText("");
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
